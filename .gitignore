@@ -6,6 +6,7 @@ __pycache__
 # Test files
 .cache/
 .coverage/
+htmlcov/
 
 # Output files are excluded from source control.
 # If you want to store a report in git, move it to `reports` folder.
