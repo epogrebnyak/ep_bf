@@ -31,8 +31,8 @@ def convert_txt2csv(txt_path, form):
     Calls functions to define 'isodate' and 'csv_path' depending on 'txt_path' 
     Selects and calls file converter depending on <form>. 
     """
-    isodate = decompose_private_txt_filename (txt_path, form)
-    csv_path = get_target_csv_path(txt_path, form)
+    isodate = _decompose_private_txt_filename (txt_path, form)
+    csv_path = _get_target_csv_path(txt_path, form)
     
     CONVERTERS = {
                   '101': convert_f101_txt2csv,
@@ -42,7 +42,7 @@ def convert_txt2csv(txt_path, form):
     converter_func = CONVERTERS[form] 
     converter_func(txt_path, csv_path, isodate)
     
-def get_parent_dirname(path):
+def _get_parent_dirname(path):
     """
     Returns parent folder stand-alone name.
     E.g. returns '2013' for path = r"D:\git\cbr-data\data.private\101\txt\2013\f101_12.txt"
@@ -50,12 +50,12 @@ def get_parent_dirname(path):
     parent = os.path.dirname(path)    
     return os.path.split(parent)[1]
  
-def decompose_private_txt_filename (path, form):
+def _decompose_private_txt_filename (path, form):
     """
     Returns reporting date of file in <path> in ISO format. 
     """
     basename = os.path.basename(path)    
-    year = int(get_parent_dirname(path))
+    year = int(_get_parent_dirname(path))
     if form == '101':
         # not-todo: this may be handled using regex 
         # reads from f101_01.txt, f101_12.txt         
@@ -68,11 +68,11 @@ def decompose_private_txt_filename (path, form):
     return isodate
     
     
-def get_target_csv_path(txt_path, form):
+def _get_target_csv_path(txt_path, form):
     """
     Returns csv file path (target file) corresponding to <txt_path> (source file).
     """
-    isodate = decompose_private_txt_filename(txt_path, form)
+    isodate = _decompose_private_txt_filename(txt_path, form)
     csv_dir = get_private_data_folder(form, 'csv')    
     filename = get_private_data_db_table(form) +  "." + isodate 
     return os.path.join(csv_dir, filename)

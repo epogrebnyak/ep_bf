@@ -33,18 +33,18 @@ def get_date_format(workbook):
 
 def simple_write_csv_to_new_xlsx_sheet(workbook, sheet_name, csv_path):
     """
-    Basic functionality to write csv to xlsx workbook sheet. 
+    Basic functionality to write csv to xlsx workbook sheet.
     """
     cell_format = get_cell_format(workbook)
-    
+
     with open(csv_path) as f:
         reader = csv.reader(f, delimiter=delimiter)
-        sheet = workbook.add_worksheet(sheet_name)                
+        sheet = workbook.add_worksheet(sheet_name)
         for i, row in enumerate(reader):
             for j, val in enumerate(row):
                 sheet.write(i, j, val, cell_format)
-    
-def write_csv_to_new_xlsx_sheet(workbook, sheet_name, csv_path, delim = '\t'):
+
+def _write_csv_to_new_xlsx_sheet(workbook, sheet_name, csv_path, delim = '\t'):
     """
     Writes data from csv file to a xlsx workbook sheet.
     Assumes some pre-formatting (e.g. first row is dates).
@@ -91,7 +91,7 @@ def make_xlsx(directory = getwd()):
     
     workbook = xlsxwriter.Workbook(xlsx_path)
     for csv_path, sheet_name in zip(csv_paths, sheet_names):
-        write_csv_to_new_xlsx_sheet(workbook, sheet_name, csv_path)
+        _write_csv_to_new_xlsx_sheet(workbook, sheet_name, csv_path)
     workbook.close()
         
 if __name__ == '__main__':              
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         xlsx_path = args['<xlsx_file>']
         
         workbook = xlsxwriter.Workbook(xlsx_path)
-        write_csv_to_new_xlsx_sheet(workbook, "Sheet1", csv_path)
+        _write_csv_to_new_xlsx_sheet(workbook, "Sheet1", csv_path)
         workbook.close()
         
                 

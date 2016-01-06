@@ -10,7 +10,7 @@ def download_form(isodate_input, form_input):
     """
     Download archive file for specific date and form type to a local folder
     """
-    url = get_url(isodate=isodate_input, form=form_input)
+    url = _get_url(isodate=isodate_input, form=form_input)
     dir_ = get_public_data_folder(form_input, 'rar')
     
     try:    
@@ -19,7 +19,7 @@ def download_form(isodate_input, form_input):
         print('Skipping download of form {} data.\nReason: {}'.format(
             form_input, str(e)))
     
-def get_url(date=None, isodate=None, form=None):
+def _get_url(date=None, isodate=None, form=None):
     """
     Creates URL based on date for forms 101 and 102
     TODO: remove harcoded form check
@@ -40,7 +40,7 @@ def get_ziprar_filename(date=None, isodate=None, form=None):
     # date is now assumed to be defined in datetime, not ISO format
     month = zero_padded_month(date.month)
     year = date.year
-    extension = get_extension(date)
+    extension = _get_extension(date)
     
     form = str(form)
 
@@ -49,7 +49,7 @@ def get_ziprar_filename(date=None, isodate=None, form=None):
     else:
         raise ValueError('Form {} not supported yet.'.format(form))
 
-def get_extension(date):
+def _get_extension(date):
     # dbf files are avaialble since Feb-2004. They are in zip format up to Dec-2008
     zip_start_date = datetime.date(2004, 2, 1)
     zip_end_date = datetime.date(2008, 12, 31)
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     assert len(sys.argv) == 3, "Usage: make_url.py form date"
     form = sys.argv[1]
     date = sys.argv[2]
-    print(get_url(isodate=date, form=form))
+    print(_get_url(isodate=date, form=form))
