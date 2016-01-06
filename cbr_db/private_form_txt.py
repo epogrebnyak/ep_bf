@@ -26,7 +26,7 @@ from .config_folders import get_private_data_folder, generate_private_data_annua
 from .date_engine import shift_month_ahead, date2iso, quarter2date, conv_date2quarter
 from .global_ini import get_private_data_db_table
 
-def convert_txt2csv(txt_path, form):
+def _convert_txt2csv(txt_path, form):
     """
     Calls functions to define 'isodate' and 'csv_path' depending on 'txt_path' 
     Selects and calls file converter depending on <form>. 
@@ -193,7 +193,7 @@ def convert_txt_directory_to_csv(form):
     for path in generate_filepaths(form):
         try:
             print("Converting {} to csv...".format(path))
-            convert_txt2csv(path, form)
+            _convert_txt2csv(path, form)
             num_converted += 1
             print("Done.")
         except FileNotFoundError:
