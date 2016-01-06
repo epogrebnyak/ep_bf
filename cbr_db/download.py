@@ -30,7 +30,7 @@ def download(url, dir_, force=False, verbose=True):
 
     try:
         mod_local = get_date(local_url)
-    except request.URLError:
+    except URLError:
         # local file does not exists
         force = True
 
