@@ -180,14 +180,6 @@ for key in ('unrar', 'z7'):
         if os.path.isfile(path_option):
             PATH.update({key:path_option})
 
-# PATH = {
-        # 'unrar': get_absolute_path(
-            # config.get('zip/rar path', 'unrar', fallback=_DEFAULT_PATH['unrar'])
-        # ),
-        # 'z7': get_absolute_path(
-            # config.get('zip/rar path', 'z7', fallback=_DEFAULT_PATH['z7'])
-    # )
-# }
 
 ############################## Executables directories [mysql]
 
