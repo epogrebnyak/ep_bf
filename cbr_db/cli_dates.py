@@ -27,20 +27,19 @@ def get_date_from_quarter_string(timestamp):
     if len(parts) != 2:
         # not in a quarter format, break
         return None
-    else:
-        # make sure the order is (year, quater), swap to this format if otherwise 
-        if len(parts[0]) == 1:
-            parts[0], parts[1] = parts[1], parts[0]
+    # make sure the order is (year, quater), swap to this format if otherwise
+    if len(parts[0]) == 1:
+        parts[0], parts[1] = parts[1], parts[0]
 
-        # convert to integer checking the range
-        year, quarter = int(parts[0]), int(parts[1])
-        if quarter not in range(1, 5):
-            raise ValueError("Quarter must be 1, 2, 3 or 4")
+    # convert to integer checking the range
+    year, quarter = int(parts[0]), int(parts[1])
+    if quarter not in range(1, 5):
+        raise ValueError("Quarter must be 1, 2, 3 or 4")
 
-        # first quarter: month 4. last quarter: first month of next year
-        month = quarter * 3
-        dt = date(year=year, month=month, day=1)
-        return shift_month_ahead(dt), "quarter"
+    # first quarter: month 4. last quarter: first month of next year
+    month = quarter * 3
+    dt = date(year=year, month=month, day=1)
+    return shift_month_ahead(dt), "quarter"
 
 # new formatters can be added by appending to DATE_FORMATS (text patterns) and
 # to SPECIAL_FORMATS (functions that accepts one string argument)

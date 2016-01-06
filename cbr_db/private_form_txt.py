@@ -26,13 +26,13 @@ from .config_folders import get_private_data_folder, generate_private_data_annua
 from .date_engine import shift_month_ahead, date2iso, quarter2date, conv_date2quarter
 from .global_ini import get_private_data_db_table
 
-def convert_txt2csv(txt_path, form):
+def _convert_txt2csv(txt_path, form):
     """
     Calls functions to define 'isodate' and 'csv_path' depending on 'txt_path' 
     Selects and calls file converter depending on <form>. 
     """
-    isodate = decompose_private_txt_filename (txt_path, form)
-    csv_path = get_target_csv_path(txt_path, form)
+    isodate = _decompose_private_txt_filename (txt_path, form)
+    csv_path = _get_target_csv_path(txt_path, form)
     
     CONVERTERS = {
                   '101': convert_f101_txt2csv,
@@ -42,7 +42,7 @@ def convert_txt2csv(txt_path, form):
     converter_func = CONVERTERS[form] 
     converter_func(txt_path, csv_path, isodate)
     
-def get_parent_dirname(path):
+def _get_parent_dirname(path):
     """
     Returns parent folder stand-alone name.
     E.g. returns '2013' for path = r"D:\git\cbr-data\data.private\101\txt\2013\f101_12.txt"
@@ -50,12 +50,12 @@ def get_parent_dirname(path):
     parent = os.path.dirname(path)    
     return os.path.split(parent)[1]
  
-def decompose_private_txt_filename (path, form):
+def _decompose_private_txt_filename (path, form):
     """
     Returns reporting date of file in <path> in ISO format. 
     """
     basename = os.path.basename(path)    
-    year = int(get_parent_dirname(path))
+    year = int(_get_parent_dirname(path))
     if form == '101':
         # not-todo: this may be handled using regex 
         # reads from f101_01.txt, f101_12.txt         
@@ -68,11 +68,11 @@ def decompose_private_txt_filename (path, form):
     return isodate
     
     
-def get_target_csv_path(txt_path, form):
+def _get_target_csv_path(txt_path, form):
     """
     Returns csv file path (target file) corresponding to <txt_path> (source file).
     """
-    isodate = decompose_private_txt_filename(txt_path, form)
+    isodate = _decompose_private_txt_filename(txt_path, form)
     csv_dir = get_private_data_folder(form, 'csv')    
     filename = get_private_data_db_table(form) +  "." + isodate 
     return os.path.join(csv_dir, filename)
@@ -118,12 +118,16 @@ def convert_f101_txt2csv(txt_file, csv_file, isodate):
             
             for row in reader:
                 if len(row) > 0:
-                    if is_in_section_a == False and row[0] == u"А.": is_in_section_a = True
-                    if is_in_section_b == False and row[0] == u"Б.": is_in_section_b = True
-                    if is_in_section_a == True and row[0] == u"Актив": a_p = 1
-                    if is_in_section_a == True and row[0] == u"Пассив": a_p = 2
-                    if is_in_section_b == True: a_p = 0
-                    #  print(a_p)
+                    if not is_in_section_a and row[0] == u"А.":
+                        is_in_section_a = True
+                    if not is_in_section_b and row[0] == u"Б.":
+                        is_in_section_b = True
+                    if is_in_section_a and row[0] == u"Актив":
+                        a_p = 1
+                    if is_in_section_a and row[0] == u"Пассив":
+                        a_p = 2
+                    if is_in_section_b:
+                        a_p = 0
                     
                 if len(row) > 0:
                     flag = "|" == row[0][0] and len(row[0]) > 1 and len(row) == 13
@@ -168,8 +172,6 @@ def convert_f102_txt2csv(txt_file, csv_file, isodate):
                     except ValueError:
                         pass
 
-
-            # print(fields)
             
 def generate_filepaths(form):
     """
@@ -191,7 +193,7 @@ def convert_txt_directory_to_csv(form):
     for path in generate_filepaths(form):
         try:
             print("Converting {} to csv...".format(path))
-            convert_txt2csv(path, form)
+            _convert_txt2csv(path, form)
             num_converted += 1
             print("Done.")
         except FileNotFoundError:
