@@ -118,12 +118,16 @@ def convert_f101_txt2csv(txt_file, csv_file, isodate):
             
             for row in reader:
                 if len(row) > 0:
-                    if is_in_section_a == False and row[0] == u"А.": is_in_section_a = True
-                    if is_in_section_b == False and row[0] == u"Б.": is_in_section_b = True
-                    if is_in_section_a == True and row[0] == u"Актив": a_p = 1
-                    if is_in_section_a == True and row[0] == u"Пассив": a_p = 2
-                    if is_in_section_b == True: a_p = 0
-                    #  print(a_p)
+                    if not is_in_section_a and row[0] == u"А.":
+                        is_in_section_a = True
+                    if not is_in_section_b and row[0] == u"Б.":
+                        is_in_section_b = True
+                    if is_in_section_a and row[0] == u"Актив":
+                        a_p = 1
+                    if is_in_section_a and row[0] == u"Пассив":
+                        a_p = 2
+                    if is_in_section_b:
+                        a_p = 0
                     
                 if len(row) > 0:
                     flag = "|" == row[0][0] and len(row[0]) > 1 and len(row) == 13
