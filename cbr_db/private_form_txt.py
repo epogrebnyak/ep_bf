@@ -172,8 +172,6 @@ def convert_f102_txt2csv(txt_file, csv_file, isodate):
                     except ValueError:
                         pass
 
-
-            # print(fields)
             
 def generate_filepaths(form):
     """
