@@ -79,9 +79,6 @@ def mysqlimport(db_name, csv_path, ignore_lines = 1, add_mode = "ignore"):
                     ignore_lines, add_mode, db_name, csv_path)
     # command_line = r'mysqlimport --ignore_lines={0} --{1} {2} "{3}" --lines-terminated-by="\r\n"'.format(
     #                ignore_lines, add_mode, db_name, csv_path)
-    run_mysqlimport_command_line(csv_path, command_line)
-
-def run_mysqlimport_command_line(csv_path, command_line):
     if os.path.isfile(csv_path):
         terminal(command_line)
     else:
