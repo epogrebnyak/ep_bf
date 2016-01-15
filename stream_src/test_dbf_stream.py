@@ -4,11 +4,24 @@ Testing of dbf_stream.py based on sample files 122012_B.DBF and 122012B1.DBF
 
 Created on Sat Aug 15 19:09:58 2015
 """
+import os
 
-from dbf_stream import yield_csv_subset, write_to_csv, get_field_list, NULL_CSV_MARKER 
+import pytest
+
+from .dbf_stream import yield_csv_subset, write_to_csv, get_field_list, NULL_CSV_MARKER
 
 
-def test_yield_by_selection(): 
+@pytest.yield_fixture(scope='module', autouse=True)
+def cwd():
+    old_cwd = os.getcwd()
+    path = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(path)
+    yield path
+    os.remove(os.path.join(path, '122012B1.csv'))
+    os.chdir(old_cwd)
+
+
+def test_yield_by_selection():
     c = "122012_B.csv"
     z = next(yield_csv_subset(c, ["NUM_SC", "SOME_EXTRA"]))
     assert z["SOME_EXTRA"] ==  NULL_CSV_MARKER 

@@ -1,6 +1,6 @@
 """Access DBF files as stream and write to CSV."""
 
-from common import change_extension, dump_iter_to_csv, yield_csv_rows
+from .common import change_extension, dump_iter_to_csv, yield_csv_rows
 from dbfread import DBF
 from collections import OrderedDict
 from datetime import datetime

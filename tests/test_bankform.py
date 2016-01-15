@@ -1,23 +1,20 @@
-import unittest
-from cbr_db import bankform
 import collections
 
-class BankformTest(unittest.TestCase):
+from cbr_db import bankform
 
-    def test_get_db_name_single(self):
-        for key in ('raw', 'final'):
-            arg = {'raw': True, 'final': False}
-            names = bankform.get_db_name(arg)
-            self.assertIsInstance(names, collections.Iterable)
-            self.assertIsInstance(names[0], str)
-            self.assertTrue(len(names) == 1)
 
-    def test_get_db_name_all(self):
-            arg = {'raw': False, 'final': False}
-            names = bankform.get_db_name(arg)
-            self.assertIsInstance(names, collections.Iterable)
-            self.assertIsInstance(names[0], str)
-            self.assertTrue(len(names) == 2)
+def test_get_db_name_single():
+    for key in ('raw', 'final'):
+        arg = {'raw': True, 'final': False}
+        names = bankform.get_db_name(arg)
+        assert isinstance(names, collections.Iterable)
+        assert isinstance(names[0], str)
+        assert len(names) == 1
 
-if __name__ == '__main__':
-    unittest.main()
+
+def test_get_db_name_all():
+    arg = {'raw': False, 'final': False}
+    names = bankform.get_db_name(arg)
+    assert isinstance(names, collections.Iterable)
+    assert isinstance(names[0], str)
+    assert len(names) == 2
